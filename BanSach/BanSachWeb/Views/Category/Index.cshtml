@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Category>
+<h1>Index Category</h1>
+<table class=" table table-bordered table-striped">
+    <thead>
+        <th>Cagory name</th>
+        <th>Display order</th>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.DisplayOrder</td>
+            </tr>
+        }
+    </tbody>
+</table>
