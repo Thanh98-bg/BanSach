@@ -25,6 +25,11 @@ namespace BanSachWeb.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category obj)
         {
+            if (obj.Name == null)
+            {
+                ModelState.AddModelError("CustomError","The name must not be empty");
+                //ModelState.AddModelError("name","The name must not be empty");
+            }
             if (ModelState.IsValid)
             {
                 _db.Categories.Add(obj);
