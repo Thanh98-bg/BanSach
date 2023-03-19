@@ -16,6 +16,7 @@
         <thead>
         <th>Category name</th>
         <th>Display order</th>
+        <th></th>
         </thead>
         <tbody>
             @foreach (var item in Model)
@@ -23,6 +24,11 @@
                 <tr>
                     <td>@item.Name</td>
                     <td>@item.DisplayOrder</td>
+                    <td>
+                        <a asp-controller="Category" asp-action="Edit" class="btn btn-primary" asp-route-id="@item.Id">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
