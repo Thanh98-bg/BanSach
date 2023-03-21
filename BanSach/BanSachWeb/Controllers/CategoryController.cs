@@ -68,5 +68,32 @@ namespace BanSachWeb.Controllers
             }
             return View(obj);
         }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Category? category = _db.Categories.FirstOrDefault(x => x.Id == id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        //post
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            Category? remove = _db.Categories.FirstOrDefault(y => y.Id == id);
+            if (remove != null && ModelState.IsValid)
+            {
+                _db.Categories.Remove(remove);
+                _db.SaveChanges();
+                return RedirectToAction("index");
+            }
+            return View();
+        }
     }
 }
