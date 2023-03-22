@@ -34,6 +34,7 @@ namespace BanSachWeb.Controllers
             {
                 _db.Categories.Add(obj);
                 _db.SaveChanges();
+                TempData["Success"] = "Category create successfully";
                 return RedirectToAction("index");
             }
             return View(obj);
@@ -64,6 +65,7 @@ namespace BanSachWeb.Controllers
             {
                 _db.Categories.Update(obj);
                 _db.SaveChanges();
+                TempData["Success"] = "Category update successfully";
                 return RedirectToAction("index");
             }
             return View(obj);
@@ -91,6 +93,7 @@ namespace BanSachWeb.Controllers
             {
                 _db.Categories.Remove(remove);
                 _db.SaveChanges();
+                TempData["Success"] = "Category delete successfully";
                 return RedirectToAction("index");
             }
             return View();
