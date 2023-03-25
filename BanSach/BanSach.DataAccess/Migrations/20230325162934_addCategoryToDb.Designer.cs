@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BanSachWeb.Migrations
+namespace BanSach.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230317160451_AddCategoryToDb")]
-    partial class AddCategoryToDb
+    [Migration("20230325162934_addCategoryToDb")]
+    partial class addCategoryToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
