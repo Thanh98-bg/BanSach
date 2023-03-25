@@ -1,5 +1,5 @@
-﻿using BanSachWeb.Data;
-using BanSachWeb.Models;
+﻿using BanSach.DataAccess.Data;
+using BanSach.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BanSachWeb.Controllers

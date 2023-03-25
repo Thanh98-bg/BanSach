@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BanSachWeb.Data;
-using BanSachWeb.Models;
+using BanSach.Model;
+using BanSach.DataAccess.Data;
 
 namespace BanSachWeb.Controllers
 {
