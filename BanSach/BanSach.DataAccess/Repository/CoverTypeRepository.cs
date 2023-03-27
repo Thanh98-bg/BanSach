@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace BanSach.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<Category>, ICategoryRepository
+    public class CoverTypeRepository : Repository<CoverType>, ICoverTypeRepository
     {
         private readonly ApplicationDbContext _db;
-        public CategoryRepository(ApplicationDbContext db) : base(db)
+        public CoverTypeRepository(ApplicationDbContext db) : base(db)
         {
-            _db = db;
         }
 
-        public void Update(Category category)
+        public void Update(CoverType cover)
         {
-            _db.Categories.Update(category);
+            _db.Update(cover);
         }
     }
 }
