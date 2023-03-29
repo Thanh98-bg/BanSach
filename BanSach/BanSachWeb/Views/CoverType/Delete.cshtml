@@ -1,0 +1,16 @@
+﻿@model CoverType
+<form method="post" asp-action="DeletePost">
+    <input asp-for="Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2>Delete category</h2>
+            <hr />
+        </div>
+        <div class="mb-3">
+            <label asp-for=Name>Name</label>
+            <input asp-for="Name" class="form-control" disabled/>
+        </div>
+        <button type="submit" class="btn btn-primary">Delete</button>
+        <a asp-controller="CoverType" asp-action="Index" class="btn btn-primary">Back to list</a>
+    </div>
+</form>

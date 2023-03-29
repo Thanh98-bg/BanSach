@@ -65,5 +65,36 @@ namespace BanSachWeb.Controllers
             }
             return View(cover);
         }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            CoverType cover = _unitOfWork.CoverType.GetFirstOrDefault(x => x.Id == id);
+            if (cover == null)
+            {
+                return NotFound();
+            }
+            return View(cover);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                CoverType cover = _unitOfWork.CoverType.GetFirstOrDefault(x => x.Id == id);
+                _unitOfWork.CoverType.Remove(cover);
+                _unitOfWork.Save();
+                TempData["Success"] = "Remove cover type successfully";
+                return RedirectToAction("index");
+            }
+            return View(id);
+        }
     }
 }
