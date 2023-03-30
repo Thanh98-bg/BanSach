@@ -3,8 +3,9 @@ using BanSach.DataAccess.Repository.IRepository;
 using BanSach.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BanSachWeb.Controllers
+namespace BanSachWeb.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -28,7 +29,7 @@ namespace BanSachWeb.Controllers
         {
             if (obj.Name == null)
             {
-                ModelState.AddModelError("CustomError","The name must not be empty");
+                ModelState.AddModelError("CustomError", "The name must not be empty");
                 //ModelState.AddModelError("name","The name must not be empty");
             }
             if (ModelState.IsValid)
@@ -46,7 +47,7 @@ namespace BanSachWeb.Controllers
             {
                 return NotFound();
             }
-            Category? category = _unitOfWork.Category.GetFirstOrDefault(x=>x.Id == id);
+            Category? category = _unitOfWork.Category.GetFirstOrDefault(x => x.Id == id);
             if (category == null)
             {
                 return NotFound();
