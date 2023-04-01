@@ -2,6 +2,7 @@
 using BanSach.DataAccess.Repository.IRepository;
 using BanSach.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BanSachWeb.Areas.Admin.Controllers
 {
@@ -18,34 +19,29 @@ namespace BanSachWeb.Areas.Admin.Controllers
             IEnumerable<Product> products = _unitOfWork.Product.GetAll();
             return View(products);
         }
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
-            return View();
-        }
-        //post
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Product obj)
-        {
-            if (ModelState.IsValid)
+            Product product = new Product();
+            IEnumerable<SelectListItem> category_list = _unitOfWork.Category.GetAll().Select(
+                u => new SelectListItem()
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+            IEnumerable<SelectListItem> cover_type_list = _unitOfWork.CoverType.GetAll().Select(
+                u => new SelectListItem()
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
+            if (id == null || id == 0)
             {
-                _unitOfWork.Product.Add(obj);
-                _unitOfWork.Save();
-                TempData["Success"] = "Product create successfully";
-                return RedirectToAction("index");
+                //create product
+                return View(product);
             }
-            return View(obj);
-        }
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
+            else
             {
-                return NotFound();
-            }
-            Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-            if (product == null)
-            {
-                return NotFound();
+                //update product
             }
             return View(product);
         }
