@@ -21,14 +21,15 @@ namespace BanSachWeb.Areas.Admin.Controllers
         }
         public IActionResult Upsert(int? id)
         {
-            Product product = new Product();
-            IEnumerable<SelectListItem> category_list = _unitOfWork.Category.GetAll().Select(
+            ProductVM productVM = new ProductVM();
+            productVM.Product = new Product();
+            productVM.CategoryList = _unitOfWork.Category.GetAll().Select(
                 u => new SelectListItem()
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
                 });
-            IEnumerable<SelectListItem> cover_type_list = _unitOfWork.CoverType.GetAll().Select(
+            productVM.CoverTypeList = _unitOfWork.CoverType.GetAll().Select(
                 u => new SelectListItem()
                 {
                     Text = u.Name,
@@ -37,15 +38,13 @@ namespace BanSachWeb.Areas.Admin.Controllers
             if (id == null || id == 0)
             {
                 //create product
-                ViewBag.CategoryList = category_list;
-                ViewData["CoverTypeList"] = cover_type_list;
-                return View(product);
+                return View(productVM);
             }
             else
             {
                 //update product
             }
-            return View(product);
+            return View(productVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

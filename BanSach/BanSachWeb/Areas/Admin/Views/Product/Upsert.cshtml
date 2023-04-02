@@ -1,4 +1,4 @@
-﻿@model Product
+﻿@model ProductVM
 <form method="post" asp-action="Upsert">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
@@ -7,52 +7,52 @@
         </div>
         <div asp-validation-summary="All"></div>
         <div class="mb-3">
-            <label asp-for=Title>Title</label>
-            <input asp-for=Title class="form-control" />
-            <span asp-validation-for=Title class="text-danger"></span>
+            <label asp-for=@Model.Product.Title>Title</label>
+            <input asp-for=@Model.Product.Title class="form-control" />
+            <span asp-validation-for=@Model.Product.Title class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=Description>Description</label>
-            <textarea asp-for=Description class="form-control" rows="3"></textarea>
-            <span asp-validation-for=Description class="text-danger"></span>
+            <label asp-for=@Model.Product.Description>Description</label>
+            <textarea asp-for=@Model.Product.Description class="form-control" rows="3"></textarea>
+            <span asp-validation-for=@Model.Product.Description class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=ISBN>ISBN</label>
-            <input asp-for=ISBN class="form-control" />
-            <span asp-validation-for=ISBN class="text-danger"></span>
+            <label asp-for=@Model.Product.ISBN>ISBN</label>
+            <input asp-for=@Model.Product.ISBN class="form-control" />
+            <span asp-validation-for=@Model.Product.ISBN class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=Author>Author</label>
-            <input asp-for=Author class="form-control" />
-            <span asp-validation-for=Author class="text-danger"></span>
+            <label asp-for=@Model.Product.Author>Author</label>
+            <input asp-for=@Model.Product.Author class="form-control" />
+            <span asp-validation-for=@Model.Product.Author class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=Price50>Price50</label>
-            <input asp-for=Price50 class="form-control" />
-            <span asp-validation-for=Price50 class="text-danger"></span>
+            <label asp-for=@Model.Product.Price50>Price50</label>
+            <input asp-for=@Model.Product.Price50 class="form-control" />
+            <span asp-validation-for=@Model.Product.Price50 class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=Price100>Price100</label>
-            <input asp-for=Price100 class="form-control" />
-            <span asp-validation-for=Price100 class="text-danger"></span>
+            <label asp-for=@Model.Product.Price100>Price100</label>
+            <input asp-for=@Model.Product.Price100 class="form-control" />
+            <span asp-validation-for=@Model.Product.Price100 class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=CategoryId>Category</label>
-            <select asp-for=CategoryId class="form-select" asp-items="ViewBag.CategoryList">
+            <label asp-for=@Model.Product.CategoryId>Category</label>
+            <select asp-for=@Model.Product.CategoryId class="form-select" asp-items="@Model.CategoryList">
                 <option disabled onselect="">
                     -- Select category --
                 </option>
                 </select>
-            <span asp-validation-for=CategoryId class="text-danger"></span>
+            <span asp-validation-for=@Model.Product.CategoryId class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for=CoverTypeId>Cover type</label>
-            <select asp-for=CoverTypeId class="form-select" asp-items="@ViewData["CoverTypeList"] as IEnumerable<SelectListItem>">
+            <label asp-for=@Model.Product.CoverTypeId>Cover type</label>
+            <select asp-for=@Model.Product.CoverTypeId class="form-select" asp-items="@Model.CoverTypeList">
                 <option disabled onselect="">
                     -- Select cover type --
                 </option>
             </select>
-            <span asp-validation-for=CoverTypeId class="text-danger"></span>
+            <span asp-validation-for=@Model.Product.CoverTypeId class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">Update</button>
         <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Back to list</a>
