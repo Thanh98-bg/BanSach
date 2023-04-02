@@ -38,6 +38,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
             {
                 //create product
                 ViewBag.CategoryList = category_list;
+                ViewData["CoverTypeList"] = cover_type_list;
                 return View(product);
             }
             else
