@@ -37,6 +37,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
             if (id == null || id == 0)
             {
                 //create product
+                ViewBag.CategoryList = category_list;
                 return View(product);
             }
             else
