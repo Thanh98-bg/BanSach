@@ -48,7 +48,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Product product)
+        public IActionResult Upsert(Product product, IFormFile file)
         {
             if (product == null)
             {
