@@ -3,6 +3,7 @@ using BanSach.DataAccess.Repository.IRepository;
 using BanSach.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using BanSach.Model.ViewModel;
 
 namespace BanSachWeb.Areas.Admin.Controllers
 {
@@ -10,9 +11,11 @@ namespace BanSachWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
@@ -22,7 +25,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
         public IActionResult Upsert(int? id)
         {
             ProductVM productVM = new ProductVM();
-            productVM.Product = new Product();
+            productVM.product_ = new Product();
             productVM.CategoryList = _unitOfWork.Category.GetAll().Select(
                 u => new SelectListItem()
                 {
@@ -37,18 +40,18 @@ namespace BanSachWeb.Areas.Admin.Controllers
                 });
             if (id == null || id == 0)
             {
-                //create product
+                //create product_
                 return View(productVM);
             }
             else
             {
-                //update product
+                //update product_
             }
             return View(productVM);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Upsert(Product product, IFormFile file)
+        public IActionResult Upsert(ProductVM product, IFormFile? file)
         {
             if (product == null)
             {
@@ -56,9 +59,22 @@ namespace BanSachWeb.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Update(product);
+                //upload images
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    string file_name = Guid.NewGuid().ToString();
+                    var uploads = Path.Combine(wwwRootPath, @"images\products");
+                    var extension = Path.GetExtension(file.FileName);
+                    using (var fileStreams = new FileStream(Path.Combine(uploads, file_name + extension), FileMode.Create))
+                    {
+                        file.CopyTo(fileStreams);
+                    }
+                    product.product_.ImageUrl = @"images\products" + file_name + extension;
+                }
+                _unitOfWork.Product.Add(product.product_);
                 _unitOfWork.Save();
-                TempData["Success"] = "Edit cover type successfully";
+                TempData["Success"] = "product_ create successfully";
                 return RedirectToAction("index");
             }
             return View(product);
@@ -89,7 +105,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
                 Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
                 _unitOfWork.Product.Remove(product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Remove product successfully";
+                TempData["Success"] = "Remove product_ successfully";
                 return RedirectToAction("index");
             }
             return View(id);

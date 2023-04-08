@@ -65,7 +65,7 @@ namespace BanSach.DataAccess.Migrations
                     b.ToTable("CoverTypes");
                 });
 
-            modelBuilder.Entity("BanSach.Model.Product", b =>
+            modelBuilder.Entity("BanSach.Model.product_", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,7 +113,7 @@ namespace BanSach.DataAccess.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("BanSach.Model.Product", b =>
+            modelBuilder.Entity("BanSach.Model.product_", b =>
                 {
                     b.HasOne("BanSach.Model.Category", "Category")
                         .WithMany()
