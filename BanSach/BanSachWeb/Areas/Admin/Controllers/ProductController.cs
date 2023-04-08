@@ -110,5 +110,13 @@ namespace BanSachWeb.Areas.Admin.Controllers
             }
             return View(id);
         }
+        #region API_CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var productList = _unitOfWork.Product.GetAll();
+            return Json(new { data = productList });
+        }
+        #endregion
     }
 }
