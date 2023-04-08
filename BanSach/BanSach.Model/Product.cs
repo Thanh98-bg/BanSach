@@ -37,6 +37,7 @@ namespace BanSach.Model
         [Required]
         public int CoverTypeId { get; set; }
         [ValidateNever]
+        [ForeignKey("CoverTypeId")]
         public CoverType CoverType { get; set; }
     }
 }

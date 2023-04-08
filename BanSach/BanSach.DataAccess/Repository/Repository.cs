@@ -25,14 +25,29 @@ namespace BanSach.DataAccess.Repository
             DbSet.Add(item);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? icludeProperties = null)
         {
-            return DbSet.ToList();
+            IQueryable<T> query = DbSet;
+            if (icludeProperties!=null)
+            {
+                foreach (var item in icludeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(item);
+                }
+            }
+            return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? icludeProperties = null)
         {
             IQueryable<T> query = DbSet.AsQueryable();
+            if (icludeProperties != null)
+            {
+                foreach (var item in icludeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(item);
+                }
+            }
             return query.Where(filter).FirstOrDefault();
         }
 

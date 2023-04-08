@@ -114,7 +114,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var productList = _unitOfWork.Product.GetAll();
+            var productList = _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
             return Json(new { data = productList });
         }
         #endregion
