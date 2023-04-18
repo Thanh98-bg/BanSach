@@ -30,7 +30,7 @@ namespace BanSach.DataAccess.Repository
                 old_product.Title = product.Title;
                 old_product.CoverTypeId = product.CoverTypeId;
                 old_product.CategoryId = product.CategoryId;
-                if (old_product.ImageUrl != null)
+                if (product.ImageUrl != null)
                 {
                     old_product.ImageUrl = product.ImageUrl;
                 }

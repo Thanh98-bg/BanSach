@@ -46,6 +46,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
             else
             {
                 //update product_
+                productVM.product_ = _unitOfWork.Product.GetFirstOrDefault(u=> u.Id ==  id);
             }
             return View(productVM);
         }
@@ -72,7 +73,14 @@ namespace BanSachWeb.Areas.Admin.Controllers
                     }
                     product.product_.ImageUrl = @"images\products" + file_name + extension;
                 }
-                _unitOfWork.Product.Add(product.product_);
+                if (product.product_.Id == 0)
+                {
+                    _unitOfWork.Product.Add(product.product_);
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(product.product_);
+                }
                 _unitOfWork.Save();
                 TempData["Success"] = "product_ create successfully";
                 return RedirectToAction("index");
