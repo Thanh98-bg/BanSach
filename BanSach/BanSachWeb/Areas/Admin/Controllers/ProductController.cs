@@ -79,7 +79,7 @@ namespace BanSachWeb.Areas.Admin.Controllers
                     {
                         file.CopyTo(fileStreams);
                     }
-                    product.product_.ImageUrl = @"images\products" + file_name + extension;
+                    product.product_.ImageUrl = @"images\products\" + file_name + extension;
                 }
                 if (product.product_.Id == 0)
                 {
