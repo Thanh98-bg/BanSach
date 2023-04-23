@@ -67,6 +67,14 @@ namespace BanSachWeb.Areas.Admin.Controllers
                     string file_name = Guid.NewGuid().ToString();
                     var uploads = Path.Combine(wwwRootPath, @"images\products");
                     var extension = Path.GetExtension(file.FileName);
+                    if (product.product_.ImageUrl != null)
+                    {
+                        var oldImagePath = Path.Combine(wwwRootPath, product.product_.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
                     using (var fileStreams = new FileStream(Path.Combine(uploads, file_name + extension), FileMode.Create))
                     {
                         file.CopyTo(fileStreams);
@@ -87,21 +95,15 @@ namespace BanSachWeb.Areas.Admin.Controllers
             }
             return View(product);
         }
-        public IActionResult Delete(int? id)
+
+        #region API_CALLS
+        [HttpGet]
+        public IActionResult GetAll()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
+            var productList = _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
+            return Json(new { data = productList });
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpDelete]
         public IActionResult DeletePost(int? id)
         {
             if (id == null)
@@ -111,19 +113,25 @@ namespace BanSachWeb.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+                if (product == null)
+                {
+                    return NotFound();
+                }
+                if (product.ImageUrl != null)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    var oldImagePath = Path.Combine(wwwRootPath, product.ImageUrl.TrimStart('\\'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
                 _unitOfWork.Product.Remove(product);
                 _unitOfWork.Save();
-                TempData["Success"] = "Remove product_ successfully";
-                return RedirectToAction("index");
+                return Json(new { success = true, message = "Delete successfully"});
             }
             return View(id);
-        }
-        #region API_CALLS
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var productList = _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
-            return Json(new { data = productList });
         }
         #endregion
     }
