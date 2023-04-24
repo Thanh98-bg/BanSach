@@ -21,6 +21,14 @@ namespace BanSachWeb.Areas.Customer.Controllers
             IEnumerable<Product> products = _unitOfWork.Product.GetAll(icludeProperties: "Category");
             return View(products);
         }
+        public IActionResult Details(int id)
+        {
+            _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
+            ShoppingCart cart = new ShoppingCart() { 
+                product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id)
+            };
+            return View(cart);
+        }
 
         public IActionResult Privacy()
         {
