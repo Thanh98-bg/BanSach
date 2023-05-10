@@ -38,5 +38,35 @@ namespace BanSachWeb.Areas.Admin.Controllers
             }
             return View(company);
         }
+        public IActionResult Edit(int? id)
+        {
+            if (id == 0 || id == null)
+            {
+                return NotFound();
+            }
+            Company company = _unitOfWork.Company.GetFirstOrDefault(x => x.Id == id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Company company)
+        {
+            if (company == null)
+            {
+                ModelState.AddModelError("CustomError", "Invalid company");
+            } 
+            else if (ModelState.IsValid)
+            {
+                _unitOfWork.Company.Update(company);
+                _unitOfWork.Save();
+                TempData["Success"] = "Company update successfully";
+                return RedirectToAction("Index");
+            }
+            return View(company);
+        }
     }
 }
