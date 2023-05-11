@@ -68,5 +68,35 @@ namespace BanSachWeb.Areas.Admin.Controllers
             }
             return View(company);
         }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            Company company = _unitOfWork.Company.GetFirstOrDefault(x => x.Id == id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+            return View(company);
+        }
+        [HttpPost]
+        public IActionResult DeletePost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Company company = _unitOfWork.Company.GetFirstOrDefault(x => x.Id == id);
+            if (company != null && ModelState.IsValid)
+            {
+                _unitOfWork.Company.Remove(company);
+                _unitOfWork.Save();
+                TempData["Success"] = "Delete company successfully";
+                return RedirectToAction("Index");
+            }
+            return View(id);
+        }
     }
 }
