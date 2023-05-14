@@ -12,18 +12,20 @@
     </div>
     <br />
     <br />
-    <table class="table table-bordered table-striped">
+    <table class="table table-bordered table-striped" id="tblData">
+        <thead>
         <tr>
             <th>Name</th>
-            <th>Street Address</th>
+            <th>StreetAddress</th>
             <th>City</th>
             <th>State</th>
-            <th>Postal Code</th>
-            <th>Phone Number</th>
+            <th>PostalCode</th>
+            <th>PhoneNumber</th>
             <th></th>
         </tr>
+        </thead>
         <tbody>
-            @foreach (var item in Model)
+@*            @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.Name</td>
@@ -41,7 +43,10 @@
                         </a>
                     </td>
                 </tr>
-            }
+            }*@
         </tbody>
     </table>
 </div>
+@section Scripts{
+    <script src="~/js/company.js"></script>
+}
