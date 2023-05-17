@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BanSach.DataAccess\BanSach.DataAccess.csproj" />
     <ProjectReference Include="..\BanSach.Model\BanSach.Model.csproj" />
+    <ProjectReference Include="..\BanSach.Utility\BanSach.Utility.csproj" />
   </ItemGroup>
 
   <ItemGroup>

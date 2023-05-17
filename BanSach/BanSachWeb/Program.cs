@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using BanSach.DataAccess.Repository;
 using Microsoft.AspNetCore.Identity;
 using BanSach.Model;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using BanSach.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 var app = builder.Build();
 
