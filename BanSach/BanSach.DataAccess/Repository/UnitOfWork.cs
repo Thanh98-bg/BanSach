@@ -18,6 +18,8 @@ namespace BanSach.DataAccess.Repository
             CoverType = new CoverTypeRepository(db);
             Product = new ProductRepository(db);
             Company = new CompanyRepository(db);
+            ShoppingCart = new ShoppingCartRepository(db);
+            ApplicationUser = new ApplicationUserRepository(db);
         }
         public ICategoryRepository Category { get; private set; }
 
@@ -26,6 +28,8 @@ namespace BanSach.DataAccess.Repository
         public IProductRepository Product { get; private set; }
 
         public ICompanyRepository Company { get; private set; }
+        public IShoppingCartRepository ShoppingCart { get; private set; }
+        public IApplicationUserRepository ApplicationUser { get; private set; }
 
         public void Save()
         {
