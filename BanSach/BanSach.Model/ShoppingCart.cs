@@ -20,11 +20,8 @@ namespace BanSach.Model
         public int Count { get; set; }
         [Range(1, 10000, ErrorMessage = "Please enter a value between 1 and 10000")]
         public string ApplicationUserId { get; set; }
-        //[ForeignKey("ApplicationUserId")]
-        //[ValidateNever]
-        //public ApplicationUser ApplicationUser { get; set; }
-
-        [NotMapped]
-        public double Price { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        [ValidateNever]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
