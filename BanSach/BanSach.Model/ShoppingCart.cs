@@ -18,7 +18,6 @@ namespace BanSach.Model
         public Product product { get; set; }
         [Range(1, 1000)]
         public int Count { get; set; }
-        [Range(1, 10000, ErrorMessage = "Please enter a value between 1 and 10000")]
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]

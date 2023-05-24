@@ -1,7 +1,9 @@
 ﻿using BanSach.DataAccess.Repository.IRepository;
 using BanSach.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BanSachWeb.Areas.Customer.Controllers
 {
@@ -18,18 +20,30 @@ namespace BanSachWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> products = _unitOfWork.Product.GetAll(icludeProperties: "Category");
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
             return View(products);
         }
-        public IActionResult Details(int id)
+        public IActionResult Details(int productId)
         {
-            _unitOfWork.Product.GetAll(icludeProperties: "Category,CoverType");
             ShoppingCart cart = new ShoppingCart() { 
-                product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == id)
+                product = _unitOfWork.Product.GetFirstOrDefault(u => u.Id == productId, icludeProperties: "Category,CoverType"),
+                Count = 1,
+                ProductId = productId
             };
             return View(cart);
         }
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart)
+        {
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            shoppingCart.ApplicationUserId = claim.Value;
+            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.Save();
+            return RedirectToAction("Index");
+        }
         public IActionResult Privacy()
         {
             return View();
