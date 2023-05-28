@@ -32,6 +32,10 @@ namespace BanSachWeb.Areas.Customer.Controllers
 			}
 			return View(ShoppingCartVM);
         }
+        public IActionResult Summary()
+        {
+            return View();
+        }
         private double GetPriceBaseOnQuantity(int quantity, double price50, double price100)
         {
             if (quantity < 100)
