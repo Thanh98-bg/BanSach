@@ -25,10 +25,14 @@ namespace BanSach.DataAccess.Repository
             DbSet.Add(item);
         }
 
-        public IEnumerable<T> GetAll(string? icludeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? icludeProperties = null)
         {
             IQueryable<T> query = DbSet;
-            if (icludeProperties!=null)
+            if (filter != null)
+            {
+				query = query.Where(filter);
+			}
+			if (icludeProperties!=null)
             {
                 foreach (var item in icludeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 {

@@ -10,7 +10,7 @@ namespace BanSach.DataAccess.Repository.IRepository
     public interface IRepository<T> where T : class
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? icludeProperties=null);
-        IEnumerable<T> GetAll(string? icludeProperties = null);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? icludeProperties = null);
         void Add(T item);
         void Remove(T item);
         void RemoveRange(IEnumerable<T> items);
