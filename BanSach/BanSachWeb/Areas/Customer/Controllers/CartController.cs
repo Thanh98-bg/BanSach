@@ -27,7 +27,8 @@ namespace BanSachWeb.Areas.Customer.Controllers
             foreach(var cart in ShoppingCartVM.ListCart)
             {
                 cart.Price = GetPriceBaseOnQuantity(cart.Count, cart.product.Price50, cart.product.Price100);
-            }
+				ShoppingCartVM.CartTotal += cart.Count * cart.Price;
+			}
 			return View(ShoppingCartVM);
         }
         private double GetPriceBaseOnQuantity(int quantity, double price50, double price100)
