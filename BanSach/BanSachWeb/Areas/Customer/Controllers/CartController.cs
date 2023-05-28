@@ -1,4 +1,5 @@
 ﻿using BanSach.DataAccess.Repository.IRepository;
+using BanSach.Model;
 using BanSach.Model.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,5 +43,38 @@ namespace BanSachWeb.Areas.Customer.Controllers
                 return price100;
             }
         }
-    }
+        public IActionResult Plus(int cartId)
+        {
+            ShoppingCart cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+            if (cart != null)
+            {
+				_unitOfWork.ShoppingCart.IncrementCount(cart, 1);
+				_unitOfWork.Save();
+			}
+            return RedirectToAction(nameof(Index));
+        }
+		public IActionResult Minus(int cartId)
+		{
+			ShoppingCart cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+			if (cart.Count > 1)
+			{
+				_unitOfWork.ShoppingCart.DecrementCount(cart, 1);
+			} else
+            {
+				_unitOfWork.ShoppingCart.Remove(cart);
+			}
+			_unitOfWork.Save();
+			return RedirectToAction(nameof(Index));
+		}
+		public IActionResult Remove(int cartId)
+		{
+			ShoppingCart cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u => u.Id == cartId);
+			if (cart != null)
+			{
+				_unitOfWork.ShoppingCart.Remove(cart);
+				_unitOfWork.Save();
+			}
+			return RedirectToAction(nameof(Index));
+		}
+	}
 }
