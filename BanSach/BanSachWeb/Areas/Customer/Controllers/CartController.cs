@@ -1,6 +1,7 @@
 ﻿using BanSach.DataAccess.Repository.IRepository;
 using BanSach.Model;
 using BanSach.Model.ViewModel;
+using BanSach.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,6 +10,7 @@ namespace BanSachWeb.Areas.Customer.Controllers
 {
     [Area("Customer")]
     [Authorize]
+	[BindProperties]
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -59,7 +61,42 @@ namespace BanSachWeb.Areas.Customer.Controllers
 			}
 			return View(ShoppingCartVM);
 		}
-        private double GetPriceBaseOnQuantity(int quantity, double price50, double price100)
+		[HttpPost]
+		[ActionName("Summary")]
+		public IActionResult SummaryPost()
+		{
+			var claimIdentity = (ClaimsIdentity)User.Identity;
+			var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+			ShoppingCartVM.ListCart = _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claim.Value, icludeProperties: "product");
+			ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+			ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+			ShoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
+			ShoppingCartVM.OrderHeader.ApplicationUserId = claim.Value;
+
+			foreach (var cart in ShoppingCartVM.ListCart)
+			{
+				cart.Price = GetPriceBaseOnQuantity(cart.Count, cart.product.Price50, cart.product.Price100);
+				ShoppingCartVM.OrderHeader.OrderTotal += cart.Count * cart.Price;
+			}
+			_unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+			_unitOfWork.Save();
+			foreach (var cart in ShoppingCartVM.ListCart)
+			{
+				OrderDetail orderDetail = new OrderDetail()
+				{
+					ProductId = cart.ProductId,
+					OrderId = ShoppingCartVM.OrderHeader.Id,
+					Price = cart.Price,
+					Count = cart.Count
+				};
+				_unitOfWork.OrderDetail.Add(orderDetail);
+				_unitOfWork.Save();
+			}
+			_unitOfWork.ShoppingCart.RemoveRange(ShoppingCartVM.ListCart);
+			_unitOfWork.Save();
+			return RedirectToAction("Index","Home");
+		}
+		private double GetPriceBaseOnQuantity(int quantity, double price50, double price100)
         {
             if (quantity < 100)
             {
